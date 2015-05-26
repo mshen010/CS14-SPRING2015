@@ -67,9 +67,10 @@ void storeTimes(std::vector<int> &v, const int duration)
 //Calculates the average for each container type, word number size, and operation
 //and writes all the data into a file called "data.txt" Formatting of that data
 //is left up to user as gnuplot may not be used in all cases.
-void calcAverage(const std::vector<int> &v)
+void calcAverage(std::vector<int> &v)
 {
-    std::ofstream ofs("data.txt");
+    std::ofstream outFS("data.txt");
+    std::vector<int> avgRuntimes;
     int average = 0;
     int sum = 0;
     for(int j = 0; j < 40; ++j) //Marks the start of each run through
@@ -80,7 +81,18 @@ void calcAverage(const std::vector<int> &v)
             sum += v.at(k+j);
         }
         average = sum / 10;
-        ofs << average << std::endl;
+        avgRuntimes.push_back(average);
+    }
+    int j; int jump = 0;
+    for(int i = 0; i < 50000; i += 5000)
+    {
+        outFS << i + 5000;
+        for(j = 0; j < 4; ++j)
+        {
+            outFS << ' ' << avgRuntimes.at(j+jump);
+        }
+        jump += 4;
+        outFS << std::endl;
     }
 }
 //Calls all the above functions to test the runtimes of insertion and find on
